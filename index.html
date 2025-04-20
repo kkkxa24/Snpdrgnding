@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>gfh</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      background: linear-gradient(to bottom right, #ffeaa7, #fab1a0);
+      color: #2d3436;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .page {
+      display: none;
+      text-align: center;
+      padding: 20px;
+      max-width: 600px;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      z-index: 1;
+      border: 1px solid rgba(0, 0, 0, 0.15);
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .page.active {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .page.fade-out {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    input {
+      padding: 10px;
+      margin: 10px 0;
+      width: 90%;
+      border: 1px solid rgba(204, 204, 204, 0.4);
+      border-radius: 10px;
+      font-size: 14px;
+    }
+
+    button {
+      padding: 12px 24px;
+      background-color: #e84393;
+      border: none;
+      border-radius: 30px;
+      color: white;
+      font-size: 14px;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: transform 0.2s;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+    }
+
+    .photo {
+      width: 100%;
+      max-width: 400px;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    }
+
+    h2#typing-text {
+      min-height: 2em;
+    }
+
+    .message-box {
+      background: rgba(255, 255, 255, 0.9);
+      padding: 20px;
+      border-radius: 80px;
+      margin-top: 20px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .pesan {
+      font-size: 14px;
+      line-height: 1.7;
+      margin: 15px 0;
+      animation: fadeText 1s ease-in;
+    }
+
+    @keyframes fadeText {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    #karakter {
+      font-size: 40px;
+      transition: transform 0.3s;
+    }
+
+    .emoji {
+      position: fixed;
+      top: -50px;
+      font-size: 24px;
+      z-index: 0;
+      animation: fall linear infinite;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(110vh);
+        opacity: 0.5;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="page active" id="page1">
+  <h2>we!</h2>
+  <p>Ade bende na</p>
+  <button onclick="goToPage(2)">Lanjut</button>
+</div>
+
+<div class="page" id="page2">
+  <h2>Masukkan Data Dulu</h2>
+  <input type="text" id="nama" placeholder="Nama lengkap"><br>
+  <input type="text" id="kelas" placeholder="Kelas"><br>
+  <input type="password" id="kode" placeholder="Kode Rahasia"><br>
+  <button onclick="cekData()">Masuk</button>
+  <p id="error" style="color: red; display: none;">Data salah!</p>
+</div>
+
+<div class="page" id="page3">
+  <h2 id="typing-text"></h2>
+  <div class="message-box">
+    <div id="pesan-lengkap" style="display: none;">
+      <p class="pesan">we</p>
+      <p class="pesan">kas aku banyak yang blm lunas ikhlaskan yak la ye.</p>
+      <button onclick="showExtra()">Lagi</button>
+      <div id="extra-content" style="display: none; margin-top: 20px;">
+        <img src="FOTO2.jpg" alt="Foto tambahan" class="photo">
+        <p class="pesan">wkwkwkwk.</p>
+        <button onclick="goToPage(4)">Main</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="page" id="page4">
+  <h2>we!</h2>
+  <p>Klik tombol di bawah buat lompat!</p>
+  <div style="margin-top: 40px;">
+    <div id="karakter">wkwk</div>
+    <button onclick="lompat()" style="margin-top: 30px;">Lompat!</button>
+  </div>
+  <button style="margin-top: 50px;" onclick="alert('Thank you!')">Selesai</button>
+</div>
+
+<script>
+  function goToPage(pageNumber) {
+    const currentPage = document.querySelector('.page.active');
+    const nextPage = document.getElementById('page' + pageNumber);
+
+    if (currentPage) {
+      currentPage.classList.add('fade-out');
+      setTimeout(() => {
+        currentPage.classList.remove('active', 'fade-out');
+        nextPage.classList.add('active');
+      }, 500);
+    } else {
+      nextPage.classList.add('active');
+    }
+  }
+
+  function cekData() {
+    const nama = document.getElementById('nama').value.toLowerCase();
+    const kelas = document.getElementById('kelas').value.toLowerCase();
+    const kode = document.getElementById('kode').value;
+
+    const namaBenar = "reisya nurfadilla";
+    const kelasBenar = "9a";
+    const kodeBenar = "bendahara123";
+
+    if (nama === namaBenar && kelas === kelasBenar && kode === kodeBenar) {
+      goToPage(3);
+    } else {
+      document.getElementById("error").style.display = "block";
+    }
+  }
+
+  function typeEffect(text, elementId, speed = 60, callback) {
+    let i = 0;
+    function typing() {
+      if (i < text.length) {
+        document.getElementById(elementId).innerHTML += text.charAt(i);
+        i++;
+        setTimeout(typing, speed);
+      } else if (callback) {
+        callback();
+      }
+    }
+    typing();
+  }
+
+  function showExtra() {
+    document.getElementById("extra-content").style.display = "block";
+  }
+
+  function lompat() {
+    const karakter = document.getElementById("karakter");
+    karakter.style.transform = "translateY(-80px)";
+    setTimeout(() => {
+      karakter.style.transform = "translateY(0)";
+    }, 300);
+  }
+
+  const observer = new MutationObserver(() => {
+    if (document.getElementById("page3").classList.contains("active")) {
+      document.getElementById("typing-text").innerHTML = "";
+      typeEffect("Selamat! anda tidak beruntung!", "typing-text", 60, () => {
+        document.getElementById("pesan-lengkap").style.display = "block";
+      });
+    }
+  });
+
+  observer.observe(document.getElementById("page3"), { attributes: true });
+
+  // Efek hujan emoji
+  const emojis = ["💲", "💸", "💰", "💵"];
+  for (let i = 0; i < 40; i++) {
+    let emoji = document.createElement("div");
+    emoji.classList.add("emoji");
+    emoji.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+    emoji.style.left = Math.random() * 100 + "vw";
+    emoji.style.animationDuration = (Math.random() * 2 + 3) + "s";
+    document.body.appendChild(emoji);
+  }
+</script>
+</body>
+</html>
